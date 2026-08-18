@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生日快乐</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    overflow-x: hidden;
+    /* ===== 背景图：把你的图片命名为 bg.jpg 放在同目录即可 ===== */
+    background: url("bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* 半透明遮罩，让文字更清晰 */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 0;
+  }
+
+  /* ===== 飘落樱花 ===== */
+  .sakura {
+    position: fixed;
+    top: -30px;
+    z-index: 1;
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(circle at 30% 30%, #ffd1e0, #ff8fab 60%, #ff6b9d);
+    border-radius: 50% 0 50% 50%;
+    opacity: 0.85;
+    animation: sakuraFall linear infinite;
+    filter: drop-shadow(0 0 3px rgba(255, 182, 193, 0.6));
+  }
+  /* 花瓣中间的纹路 */
+  .sakura::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 8px;
+    background: rgba(255, 105, 135, 0.5);
+    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 1px;
+  }
+  @keyframes sakuraFall {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    25% {
+      transform: translateY(25vh) translateX(40px) rotate(90deg);
+    }
+    50% {
+      transform: translateY(50vh) translateX(-30px) rotate(180deg);
+    }
+    75% {
+      transform: translateY(75vh) translateX(50px) rotate(270deg);
+    }
+    100% {
+      transform: translateY(105vh) translateX(-20px) rotate(360deg);
+    }
+  }
+
+  /* ===== 主标题 ===== */
+  .title {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding-top: 60px;
+    color: #fff;
+  }
+  .title h1 {
+    font-size: clamp(40px, 8vw, 90px);
+    font-weight: 900;
+    letter-spacing: 8px;
+    background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #ff6b6b);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 4s linear infinite, bounce 2s ease-in-out infinite;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  }
+  @keyframes shine {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+  .title .sub {
+    margin-top: 16px;
+    font-size: clamp(16px, 3vw, 24px);
+    color: #ffe4e1;
+    letter-spacing: 4px;
+    animation: fadeIn 2s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== 蛋糕 ===== */
+  .cake-wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  .cake {
+    position: relative;
+    width: 280px;
+    height: 220px;
+    cursor: pointer;
+  }
+  /* 盘子 */
+  .plate {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 24px;
+    background: linear-gradient(180deg, #e0e0e0, #a0a0a0);
+    border-radius: 50%;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+  /* 蛋糕底层 */
+  .layer-bottom {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    height: 90px;
+    background: linear-gradient(180deg, #f8a5c2, #e056a0);
+    border-radius: 10px 10px 20px 20px;
+    box-shadow: inset 0 -10px 20px rgba(0,0,0,0.15);
+  }
+  /* 奶油花边 */
+  .layer-bottom::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 0;
+    right: 0;
+    height: 24px;
+    background:
+      radial-gradient(circle at 15px 12px, #fff 12px, transparent 13px),
+      radial-gradient(circle at 45px 12px, #fff 12px, transparent 13px),
+      radial-gradient(circle at 75px 12px, #fff 12px, transparent 13px),
+      radial-gradient(circle at 105px 12px, #fff 12px, transparent 13px),
+      radial-gradient(circle at 135px 12px, #fff 12px, transparent 13px),
+      radial-gradient(circle at 165px 12px, #fff 12px, transparent 13px),
+      radial-gradient(circle at 195px 12px, #fff 12px, transparent 13px),
+      radial-gradient(circle at 225px 12px, #fff 12px, transparent 13px),
+      radial-gradient(circle at 255px 12px, #fff 12px, transparent 13px);
+    background-size: 30px 24px;
+  }
+  /* 蛋糕上层 */
+  .layer-top {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 70px;
+    background: linear-gradient(180deg, #fff5f5, #ffd1dc);
+    border-radius: 8px 8px 16px 16px;
+    box-shadow: inset 0 -8px 16px rgba(0,0,0,0.1);
+  }
+  .layer-top::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background:
+      radial-gradient(circle at 12px 10px, #fff 10px, transparent 11px),
+      radial-gradient(circle at 36px 10px, #fff 10px, transparent 11px),
+      radial-gradient(circle at 60px 10px, #fff 10px, transparent 11px),
+      radial-gradient(circle at 84px 10px, #fff 10px, transparent 11px),
+      radial-gradient(circle at 108px 10px, #fff 10px, transparent 11px),
+      radial-gradient(circle at 132px 10px, #fff 10px, transparent 11px),
+      radial-gradient(circle at 156px 10px, #fff 10px, transparent 11px),
+      radial-gradient(circle at 180px 10px, #fff 10px, transparent 11px);
+    background-size: 24px 20px;
+  }
+  /* 樱桃装饰 */
+  .cherry {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle at 4px 4px, #ff6b6b, #c0392b);
+    border-radius: 50%;
+    bottom: 165px;
+  }
+  .cherry:nth-child(1) { left: 70px; }
+  .cherry:nth-child(2) { left: 110px; }
+  .cherry:nth-child(3) { left: 150px; }
+  .cherry:nth-child(4) { left: 190px; }
+
+  /* 蜡烛 */
+  .candle {
+    position: absolute;
+    bottom: 168px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 50px;
+    background: repeating-linear-gradient(
+      0deg,
+      #ff6b6b 0px, #ff6b6b 6px,
+      #fff 6px, #fff 12px
+    );
+    border-radius: 3px;
+  }
+  /* 烛芯 */
+  .candle::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 8px;
+    background: #333;
+  }
+  /* 火焰 */
+  .flame {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 24px;
+    background: radial-gradient(ellipse at center bottom, #fff 0%, #ffd93d 30%, #ff6b6b 70%, transparent 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 0.3s ease-in-out infinite alternate;
+    box-shadow: 0 0 20px #ffd93d, 0 0 40px #ff6b6b;
+    transform-origin: center bottom;
+  }
+  @keyframes flicker {
+    0%   { transform: translateX(-50%) scale(1) rotate(-2deg); opacity: 1; }
+    100% { transform: translateX(-50%) scale(1.1) rotate(2deg); opacity: 0.85; }
+  }
+  .flame.out {
+    animation: blowOut 0.6s forwards;
+  }
+  @keyframes blowOut {
+    0%   { transform: translateX(-50%) scale(1); opacity: 1; }
+    50%  { transform: translateX(-50%) scale(1.5) translateY(-10px); opacity: 0.5; }
+    100% { transform: translateX(-50%) scale(0); opacity: 0; }
+  }
+  /* 烟雾 */
+  .smoke {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: rgba(200, 200, 200, 0.6);
+    border-radius: 50%;
+    opacity: 0;
+  }
+  .smoke.show {
+    animation: smokeUp 1.5s ease-out forwards;
+  }
+  @keyframes smokeUp {
+    0%   { opacity: 0.8; transform: translateX(-50%) translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-60px) scale(3); }
+  }
+
+  .hint {
+    margin-top: 24px;
+    color: #fff;
+    font-size: 16px;
+    letter-spacing: 2px;
+    animation: pulse 1.5s ease-in-out infinite;
+    z-index: 2;
+    position: relative;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+  }
+
+  /* ===== 祝福语 ===== */
+  .wish {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 60px auto 40px;
+    padding: 30px 40px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    text-align: center;
+    line-height: 2;
+    font-size: 17px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+  }
+  .wish.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .wish h2 {
+    font-size: 26px;
+    margin-bottom: 16px;
+    color: #ffd93d;
+  }
+
+  /* ===== 朋友照片 ===== */
+  .photo-frame {
+    position: relative;
+    z-index: 2;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 50px;
+    border-radius: 50%;
+    padding: 6px;
+    background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff);
+    background-size: 300% 300%;
+    animation: rotateBg 4s linear infinite;
+    opacity: 0;
+    transition: opacity 1s ease 0.5s;
+  }
+  .photo-frame.show { opacity: 1; }
+  @keyframes rotateBg {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ===== 烟花 canvas ===== */
+  #fireworks {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ===== 音乐按钮 ===== */
+  .music-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+  }
+  .music-btn:hover { transform: scale(1.1); }
+  .music-btn.playing { animation: spin 4s linear infinite; }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* ===== 开场遮罩 ===== */
+  #intro {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #intro.hide {
+    opacity: 0;
+    visibility: hidden;
+  }
+  #intro .intro-icon {
+    font-size: 80px;
+    animation: introPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes introPulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.15); }
+  }
+  #intro .intro-text {
+    margin-top: 30px;
+    color: #fff;
+    font-size: clamp(20px, 4vw, 32px);
+    letter-spacing: 6px;
+    font-weight: bold;
+  }
+  #intro .intro-hint {
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    letter-spacing: 3px;
+    animation: introBlink 1.2s ease-in-out infinite;
+  }
+  @keyframes introBlink {
+    0%, 100% { opacity: 0.3; }
+    50%      { opacity: 1; }
+  }
+
+  /* ===== 底部签名 ===== */
+  .footer {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 30px 20px 50px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- 背景音乐：把你的音乐命名为 birthday.mp3 放在同目录 -->
+<audio id="bgm" src="birthday.mp3" loop></audio>
+
+<!-- 开场遮罩：点击后播放音乐并进入页面 -->
+<div id="intro">
+  <div class="intro-icon">🎂</div>
+  <div class="intro-text">生日快乐</div>
+  <div class="intro-hint">轻触屏幕 · 开启惊喜</div>
+</div>
+
+<!-- 音乐控制按钮 -->
+<button class="music-btn" id="musicBtn" title="播放/暂停音乐">🎵</button>
+
+<!-- 烟花层 -->
+<canvas id="fireworks"></canvas>
+
+<!-- 标题 -->
+<div class="title">
+  <h1>🎂 生日快乐 🎂</h1>
+  <div class="sub">Happy Birthday To You</div>
+</div>
+
+<!-- 蛋糕 -->
+<div class="cake-wrap">
+  <div class="cake" id="cake">
+    <div class="candle">
+      <div class="flame" id="flame"></div>
+      <div class="smoke" id="smoke"></div>
+    </div>
+    <div class="cherry"></div>
+    <div class="cherry"></div>
+    <div class="cherry"></div>
+    <div class="cherry"></div>
+    <div class="layer-top"></div>
+    <div class="layer-bottom"></div>
+    <div class="plate"></div>
+  </div>
+  <div class="hint" id="hint">👆 点击蛋糕，吹灭蜡烛许愿吧</div>
+</div>
+
+<!-- 朋友照片：把照片命名为 photo.jpg 放在同目录 -->
+<div class="photo-frame" id="photoFrame">
+  <img src="photo.jpg" alt="寿星">
+</div>
+
+<!-- 祝福语 -->
+<div class="wish" id="wish">
+  <h2>✨ 生日祝福 ✨</h2>
+  <p>上一中考武大</p>
+  <p>愿你所念之人平安喜乐，愿你所想之事顺心如意。</p>
+  <p>向前走！🌟</p>
+</div>
+
+<div class="footer">— Made with ❤️ for you —</div>
+
+<script>
+  /* ===== 樱花飘落 ===== */
+  const sakuraColors = [
+    'radial-gradient(circle at 30% 30%, #ffe4ec, #ffb6c1 60%, #ff8fab)',
+    'radial-gradient(circle at 30% 30%, #fff0f5, #ffc0cb 60%, #ff91a4)',
+    'radial-gradient(circle at 30% 30%, #ffd6e0, #ff9ebb 60%, #ff7aa2)',
+    'radial-gradient(circle at 30% 30%, #ffeef3, #ffd1dc 60%, #ffa6c1)'
+  ];
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement('div');
+    s.className = 'sakura';
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.background = sakuraColors[Math.floor(Math.random() * sakuraColors.length)];
+    s.style.animationDuration = (Math.random() * 6 + 6) + 's';
+    s.style.animationDelay = Math.random() * 8 + 's';
+    const size = Math.random() * 12 + 10;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.opacity = Math.random() * 0.4 + 0.5;
+    document.body.appendChild(s);
+  }
+
+  /* ===== 吹蜡烛 ===== */
+  const cake = document.getElementById('cake');
+  const flame = document.getElementById('flame');
+  const smoke = document.getElementById('smoke');
+  const hint = document.getElementById('hint');
+  const wish = document.getElementById('wish');
+  const photoFrame = document.getElementById('photoFrame');
+  let blown = false;
+
+  cake.addEventListener('click', () => {
+    if (blown) return;
+    blown = true;
+    flame.classList.add('out');
+    smoke.classList.add('show');
+    hint.textContent = '天天开心！';
+    setTimeout(() => {
+      wish.classList.add('show');
+      photoFrame.classList.add('show');
+      startFireworks();
+    }, 700);
+  });
+
+  /* ===== 烟花效果 ===== */
+  const canvas = document.getElementById('fireworks');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let fireworksRunning = false;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  class Particle {
+    constructor(x, y, color) {
+      this.x = x;
+      this.y = y;
+      this.color = color;
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 6 + 2;
+      this.vx = Math.cos(angle) * speed;
+      this.vy = Math.sin(angle) * speed;
+      this.alpha = 1;
+      this.decay = Math.random() * 0.015 + 0.01;
+      this.size = Math.random() * 3 + 1;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.vy += 0.05; // 重力
+      this.alpha -= this.decay;
+    }
+    draw() {
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+      ctx.fillStyle = this.color;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function createFirework(x, y) {
+    const fwColors = ['#ff6b9d', '#ff8fab', '#ffb6c1', '#ffd1dc', '#fff0f5', '#ffc0cb'];
+    const color = fwColors[Math.floor(Math.random() * fwColors.length)];
+    for (let i = 0; i < 60; i++) {
+      particles.push(new Particle(x, y, color));
+    }
+  }
+
+  function animateFireworks() {
+    if (!fireworksRunning) return;
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    particles = particles.filter(p => p.alpha > 0);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animateFireworks);
+  }
+
+  function startFireworks() {
+    fireworksRunning = true;
+    animateFireworks();
+    // 定时放烟花
+    setInterval(() => {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height * 0.5 + 50;
+      createFirework(x, y);
+    }, 800);
+    // 立即来几发
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        createFirework(
+          Math.random() * canvas.width,
+          Math.random() * canvas.height * 0.4 + 80
+        );
+      }, i * 300);
+    }
+  }
+
+  /* ===== 音乐控制 ===== */
+  const bgm = document.getElementById('bgm');
+  const musicBtn = document.getElementById('musicBtn');
+  const intro = document.getElementById('intro');
+  let musicPlaying = false;
+
+  // 开场遮罩点击：播放音乐 + 进入页面
+  intro.addEventListener('click', () => {
+    bgm.play().then(() => {
+      musicPlaying = true;
+      musicBtn.classList.add('playing');
+    }).catch(err => {
+      console.log('音乐播放失败，请检查文件是否存在:', err);
+    });
+    intro.classList.add('hide');
+    setTimeout(() => intro.remove(), 800);
+  });
+
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (musicPlaying) {
+      bgm.pause();
+      musicBtn.classList.remove('playing');
+      musicBtn.textContent = '🔇';
+    } else {
+      bgm.play().then(() => {
+        musicBtn.classList.add('playing');
+        musicBtn.textContent = '🎵';
+      }).catch(() => {});
+    }
+    musicPlaying = !musicPlaying;
+  });
+</script>
+
+</body>
+</html>
